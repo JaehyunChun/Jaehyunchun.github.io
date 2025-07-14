@@ -1,11 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Jaehyun Chun's Website</title>
-</head>
-<body>
-  <h1>Hello, I'm Jaehyun Chun!</h1>
-  <p>This is my personal profile website hosted on GitHub Pages.</p>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+    <title>Jaehyun Chun - Energy Engineering Student | Power Systems Specialist</title>
+    <meta name="description" content="Jaehyun Chun - Energy Engineering student at KENTECH specializing in power grid systems, SCADA automation, and renewable energy integration." />
+    <meta name="keywords" content="Energy Engineering, Power Systems, SCADA, Grid Automation, Renewable Energy, KENTECH" />
+    <meta name="author" content="Jaehyun Chun" />
+    
+    <!-- Open Graph tags -->
+    <meta property="og:title" content="Jaehyun Chun - Energy Engineering Student" />
+    <meta property="og:description" content="Energy Engineering student at KENTECH specializing in power grid systems and renewable energy integration." />
+    <meta property="og:type" content="website" />
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Source+Sans+Pro:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Print styles -->
+    <style>
+      @media print {
+        .no-print { display: none !important; }
+        body { font-size: 12pt; line-height: 1.4; }
+        .print-break { page-break-before: always; }
+        nav { display: none !important; }
+        .fixed { position: static !important; }
+        .shadow-lg { box-shadow: none !important; }
+      }
+      
+      html { scroll-behavior: smooth; }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+    <!-- This is a replit script which adds a banner on the top of the page when opened in development mode outside the replit environment -->
+    <script type="text/javascript" src="https://replit.com/public/js/replit-dev-banner.js"></script>
+  </body>
 </html>
