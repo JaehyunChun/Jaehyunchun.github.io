@@ -81,6 +81,70 @@
             color: #000;
         }
         
+        .ai-chat-button {
+            background: linear-gradient(135deg, #000 0%, #333 100%);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .ai-chat-button:hover {
+            background: linear-gradient(135deg, #333 0%, #555 100%);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+        
+        .ai-chat-button:active {
+            transform: translateY(0);
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #333;
+        }
+        
+        .mobile-menu {
+            background: white;
+            border-top: 1px solid #e5e5e5;
+            padding: 1rem 0;
+        }
+        
+        .mobile-menu a, .mobile-menu .mobile-ai-btn {
+            display: block;
+            padding: 0.75rem 1rem;
+            text-decoration: none;
+            color: #333;
+            border: none;
+            background: none;
+            width: 100%;
+            text-align: left;
+            cursor: pointer;
+        }
+        
+        .mobile-menu .mobile-ai-btn {
+            background: linear-gradient(135deg, #000 0%, #333 100%);
+            color: white;
+            border-radius: 8px;
+            margin: 0 1rem 0.5rem 1rem;
+            width: calc(100% - 2rem);
+        }
+        
+        .mobile-menu a:hover {
+            background-color: #f8f9fa;
+        }
+        
         /* Hero Section */
         .hero {
             padding: 120px 0 80px;
@@ -269,6 +333,15 @@
                 display: none;
             }
             
+            .mobile-menu-btn {
+                display: block !important;
+            }
+            
+            .ai-chat-button {
+                padding: 6px 12px;
+                font-size: 12px;
+            }
+            
             .hero-content {
                 grid-template-columns: 1fr;
                 text-align: center;
@@ -312,13 +385,27 @@
         <div class="container">
             <div class="nav-container">
                 <div class="logo font-heading">Jaehyun Chun</div>
-                <ul class="nav-links">
-                    <li><a href="#about">About</a></li>
-                    <li><a href="#education">Education</a></li>
-                    <li><a href="#experience">Experience</a></li>
-                    <li><a href="#skills">Skills</a></li>
-                    <li><a href="#contact">Contact</a></li>
-                </ul>
+                <div class="nav-right">
+                    <ul class="nav-links">
+                        <li><button id="ai-chat-btn" class="ai-chat-button" onclick="openMendableChat()">🤖 AI Assistant</button></li>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#education">Education</a></li>
+                        <li><a href="#experience">Experience</a></li>
+                        <li><a href="#skills">Skills</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                    <button class="mobile-menu-btn" onclick="toggleMobileMenu()" style="display: none;">☰</button>
+                </div>
+            </div>
+            
+            <!-- Mobile Menu -->
+            <div id="mobile-menu" class="mobile-menu" style="display: none;">
+                <button class="ai-chat-button mobile-ai-btn" onclick="openMendableChat()">🤖 AI Assistant</button>
+                <a href="#about" onclick="toggleMobileMenu()">About</a>
+                <a href="#education" onclick="toggleMobileMenu()">Education</a>
+                <a href="#experience" onclick="toggleMobileMenu()">Experience</a>
+                <a href="#skills" onclick="toggleMobileMenu()">Skills</a>
+                <a href="#contact" onclick="toggleMobileMenu()">Contact</a>
             </div>
         </div>
     </nav>
@@ -513,5 +600,88 @@
             </div>
         </div>
     </section>
+
+    <!-- Mendable.ai Chat Widget -->
+    <div id="mendable-chat-container" style="display: none;"></div>
+    
+    <!-- Mendable.ai Scripts -->
+    <script src="https://unpkg.com/@mendable/search@0.0.203/dist/umd/mendable-bundle.min.js"></script>
+    <script>
+        let mendableInitialized = false;
+        let mendableChat = null;
+        
+        function initializeMendable() {
+            if (mendableInitialized) return;
+            
+            try {
+                mendableChat = Mendable.initialize({
+                    anon_key: '400b8c09-a283-482d-86bf-19fbfdb49e4d',
+                    type: 'floatingButton',
+                    style: {
+                        darkMode: false,
+                        accentColor: "#000000",
+                        botName: "Jaehyun's AI Assistant",
+                        botAvatar: "🤖",
+                        chatBubbleColor: "#000000",
+                        chatBubbleTextColor: "#ffffff"
+                    },
+                    dialogueConfig: {
+                        welcomeMessage: "Hello! I'm Jaehyun's AI assistant. I can help you learn more about his background in energy engineering, research experience, and technical skills. What would you like to know?",
+                        placeholder: "Ask me about Jaehyun's experience, skills, or background...",
+                        conversationStarters: [
+                            "Tell me about Jaehyun's research experience",
+                            "What are his technical skills?",
+                            "What is his educational background?",
+                            "How can I contact Jaehyun?"
+                        ]
+                    }
+                });
+                mendableInitialized = true;
+                console.log('Mendable AI chat initialized successfully');
+            } catch (error) {
+                console.error('Failed to initialize Mendable AI:', error);
+            }
+        }
+        
+        function openMendableChat() {
+            if (!mendableInitialized) {
+                initializeMendable();
+            }
+            
+            // The floating button will automatically appear when initialized
+            // We can also trigger it programmatically if needed
+            if (mendableChat && mendableChat.open) {
+                mendableChat.open();
+            }
+        }
+        
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Delay initialization slightly to ensure page is fully loaded
+            setTimeout(initializeMendable, 1000);
+        });
+        
+        // Add mobile menu toggle functionality
+        function toggleMobileMenu() {
+            const mobileMenu = document.getElementById('mobile-menu');
+            if (mobileMenu) {
+                mobileMenu.style.display = mobileMenu.style.display === 'block' ? 'none' : 'block';
+            }
+        }
+        
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
 </body>
 </html>
